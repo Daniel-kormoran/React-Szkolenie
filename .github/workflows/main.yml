@@ -1,0 +1,76 @@
+name: Integration and Deployment
+on:
+  push:
+    branches:
+    - main
+    - production
+    - github_action
+  pull_request:
+    branches:
+    - main
+  workflow_dispatch:
+jobs:
+  deploy:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pobranie Kodu
+      uses: actions/checkout@v4
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Dependences
+      run: npm install
+
+    - name: Build App
+      run: npm run build -y
+
+    # - name: Deploy to Vercel
+    #   uses: amondnet/vercel-action@v20
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }} 
+    #     github-token: ${{secrets.GITHUB_TOKEN }}
+    #     vercel-args: '--prod'
+
+    - name: Install expect
+      run: sudo apt-get update && sudo apt-get install -y expect
+
+    - name: Deploy to Vercel
+      run: |
+         expect -c "
+           set timeout -1;
+           spawn npx vercel deploy --token ${{ secrets.VERCEL_TOKEN }} --prod ;
+           expect \"y/n\";
+           send \"y\r\";
+           expect eof
+         "
+      
+    
+      
+  # web-deploy:
+  #   needs: build
+  #   name: Deploy
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Połaczenie z FTP
+  #     uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  #     with:
+  #         server: s31.mydevil.net
+  #         username: f1080_daniel
+  #         password: ${{ secrets.password }}
+
+  
+
+
+    
+      
+
+
+
+    
+    
+   
+    

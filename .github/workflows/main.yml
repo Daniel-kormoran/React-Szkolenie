@@ -29,14 +29,21 @@ jobs:
       run: npm run build -y
 
     # - name: Deploy to Vercel
-    #   run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} 
-
+    #   uses: amondnet/vercel-action@v20
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }} 
+    #     github-token: ${{secrets.GITHUB_TOKEN }}
+    #     vercel-args: '--prod'
     - name: Deploy to Vercel
-      uses: amondnet/vercel-action@v20
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }} 
-        github-token: ${{secrets.GITHUB_TOKEN }}
-        vercel-args: '--prod'
+      run: |
+         expect -c "
+           set timeout -1;
+           spawn npx vercel deploy --token ${{ secrets.VERCEL_TOKEN }} --prod ;
+           expect \"y/n\";
+           send \"y\r\";
+           expect eof
+         "
+      
     
       
   # web-deploy:

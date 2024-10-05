@@ -28,8 +28,16 @@ jobs:
     - name: Build App
       run: npm run build
 
+    # - name: Deploy to Vercel
+    #   run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} 
+
     - name: Deploy to Vercel
-      run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} 
+      uses: amandnet/vercel-action@v20
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }} 
+        github-token: ${{secrets.GITHUB_TOKEN }}
+        vercel-args: '--prod'
+    
       
   # web-deploy:
   #   needs: build

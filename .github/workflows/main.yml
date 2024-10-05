@@ -10,7 +10,7 @@ on:
     - main
   workflow_dispatch:
 jobs:
-  build:
+  deploy:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -27,18 +27,21 @@ jobs:
 
     - name: Build App
       run: npm run build
+
+    - name: Deploy to Vercel
+      run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} --scope danielswiecki
       
-  web-deploy:
-    needs: build
-    name: Deploy
-    runs-on: ubuntu-latest
-    steps:
-    - name: Połaczenie z FTP
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-          server: s31.mydevil.net
-          username: f1080_daniel
-          password: ${{ secrets.password }}
+  # web-deploy:
+  #   needs: build
+  #   name: Deploy
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Połaczenie z FTP
+  #     uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+  #     with:
+  #         server: s31.mydevil.net
+  #         username: f1080_daniel
+  #         password: ${{ secrets.password }}
 
   
 

@@ -34,6 +34,10 @@ jobs:
     #     vercel-token: ${{ secrets.VERCEL_TOKEN }} 
     #     github-token: ${{secrets.GITHUB_TOKEN }}
     #     vercel-args: '--prod'
+
+    - name: Install expect
+      run: sudo apt-get update && sudo apt-get install -y expect
+
     - name: Deploy to Vercel
       run: |
          expect -c "

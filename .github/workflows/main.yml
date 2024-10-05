@@ -10,19 +10,43 @@ on:
     - main
   workflow_dispatch:
 jobs:
-  web-deploy:
-    name: Deploy
+build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
     - name: Pobranie Kodu
       uses: actions/checkout@v4
 
+    - name: Install Node.js
+      uses: actions/setip-node@v4
+      with:
+        node-version: '20'
+        
+    - name: Install Dependences
+      run: npm install
+
+    - name: Build App
+      run: npm run build
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
     - name: Połaczenie z FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
         server: s31.mydevil.net
         username: f1080_daniel
         password: ${{ secrets.password }}
+
+  
+
+
+    
+      
+
+
+
+    
     
    
     

@@ -9,5 +9,20 @@ on:
     branches:
     - main
   workflow_dispatch:
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: Pobranie Kodu
+      uses: actions/checkout@v4
+
+    - name: Połaczenie z FTP
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: s31.mydevil.net
+        username: f1080_daniel
+        password: ${{ secrets.password }}
+    
    
     

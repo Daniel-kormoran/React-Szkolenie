@@ -10,7 +10,7 @@ on:
     - main
   workflow_dispatch:
 jobs:
-build:
+  build:
     name: Build
     runs-on: ubuntu-latest
     steps:
@@ -27,16 +27,18 @@ build:
 
     - name: Build App
       run: npm run build
+      
   web-deploy:
+    needs: build
     name: Deploy
     runs-on: ubuntu-latest
     steps:
     - name: Połaczenie z FTP
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: s31.mydevil.net
-        username: f1080_daniel
-        password: ${{ secrets.password }}
+          server: s31.mydevil.net
+          username: f1080_daniel
+          password: ${{ secrets.password }}
 
   
 
